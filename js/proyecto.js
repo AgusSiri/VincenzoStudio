@@ -26,7 +26,7 @@ function Service(sections, tienda, mantenimiento, webExpres) {
 }
 
 
-var sections= parseInt(prompt("Ingrese la cantidad de sections que tendrá el sitio"));
+var sections= parseInt(prompt("Ingrese la cantidad de páginas o secciones que tendrá el sitio"));
 var tienda = prompt("Necesita una tienda online en su web?");
 var mantenimiento = prompt("Desea contratar servicio de mantenimiento para su sitio?");
 var webExpres = prompt("Necesita su sitio dentro de los prox 10 dias?");
