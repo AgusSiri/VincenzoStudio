@@ -34,12 +34,36 @@ p {
     margin-bottom: 10px; 
 }
 
+button {
+  margin-top: 1px; 
+  margin-left: 15%;
+  background: transparent;
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  border: 2px solid #7DD8C2;
+  box-shadow: 6px 5px 24px black;
+  font-family: Arial;
+  color: white;
+  font-size: 27px;
+  padding: 19px;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-bottom: 10%;
+}
+button:hover {
+  background-color: #7DD8C2;
+  color: #8E2DE2;
+}
+
 .container-fluid {
     padding: 0%; }
   
   /***BODY***/
   .bodyinicio {
-    background-color: #5D55B1;
+    background: #8E2DE2;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4A00E0, #8E2DE2); 
+    background: linear-gradient(to right, #4A00E0, #8E2DE2); 
     margin: 0;
     padding: 0;
     background-size: 100% 100%;
@@ -47,7 +71,7 @@ p {
 
 /***SECTIONREDES***/
 #logoredesdiv {
-    background-color: #7DD8C2;
+    /***background-color: #7DD8C2;***/
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -71,6 +95,7 @@ p {
           height: 28px; }
 
 
+
 /***NAV***/
 .menuUno {
     display: flex;
@@ -91,7 +116,20 @@ p {
           color: #7DD8C2;
           font-size: 19px; }
 
-.bienvenidos .logo img {
+.menuUno .logo img {
+  padding-top: 0%;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-right: 800px;
+  margin-left: 5%;
+  transition: all 2s; }
+  .menuUno .logo img:hover {
+    width: 300px;
+      height: 300px; 
+  }
+/***.bienvenidos .logo img {
+    padding-top: 0%;
     position: relative;
     width: 200px;
     height: 200px;
@@ -101,15 +139,88 @@ p {
       width: 300px;
         height: 300px; 
     }
+    revisar***/
 
 .bienvenidos .fraseprincipal h1 {
     color: white;
-    font-size: 5vw;
+    font-size: 4vw;
     font-family: 'Montserrat', sans-serif;
     text-align: left;
-    margin-top: 5px; 
-    margin-left: 5%;
-    margin-right: 20%;
+    margin-top: 5%; 
+    margin-left: 15%;
+}
+
+.bienvenidos .fraseprincipal p {
+  text-align: left;
+  margin-top: 2px; 
+  margin-left: 15%;
+  margin-bottom: 3%;
+}
+
+/***.bienvenidos .fraseprincipal button {
+  margin-top: 1px; 
+  margin-left: 15%;
+  background: transparent;
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  border: 2px solid #7DD8C2;
+  box-shadow: 6px 5px 24px black;
+  font-family: Arial;
+  color: white;
+  font-size: 27px;
+  padding: 19px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.bienvenidos .fraseprincipal button:hover {
+    background-color: #7DD8C2;
+    color: #8E2DE2;
+}***/
+
+
+.imgComputer {
+  margin-left: 0%;
+  margin-right: 5%;
+  padding: 0%;
+  margin-top: 5%; 
+}
+
+.snow {
+	position: absolute;
+	min-width: 100vw;
+	min-height: 100vh;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+}
+
+.snow .svg {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#snow-top-layer {
+	will-change: transform;
+	transform: translateY(-768px);
+	animation: fall 22.5s infinite linear;
+}
+
+#snow-bottom-layer {
+	will-change: transform;
+	transform: translateY(-768px);
+	animation: fall 45s infinite linear;
+}
+
+@keyframes fall {
+	
+	100% {
+		transform: translateY(0);
+	}
+	
 }
 
 /***ABOUT***/
@@ -152,6 +263,7 @@ p {
     margin-left: 20%;
     margin-top: 0%;
 }
+
 
 #contacto {
     background-color: white;
@@ -222,7 +334,6 @@ p {
     display: block; }
 
 .footer-distributed {
-    background-color: white;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
     box-sizing: border-box;
     width: 100%;
@@ -256,7 +367,7 @@ p {
       vertical-align: top;
       width: 20%; }
     .footer-distributed h3 {
-      color:  #5D55B1;
+      color:  white;
       font-family: 'Montserrat', sans-serif;
       font-size: 26px;
       margin: 0; }
@@ -266,7 +377,7 @@ p {
       .footer-distributed h3 span {
         color: #7DD8C2; }
     .footer-distributed .footer-links {
-      color:  #5D55B1;
+      color:  white;
       margin: 20px 0 12px;
       padding: 0; }
       .footer-distributed .footer-links a {
