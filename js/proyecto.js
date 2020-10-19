@@ -14,7 +14,7 @@ arrayNuevoCliente.push(new Cliente(nombre, apellido, celular));
 
 //Datos Cliente//
 
-function Cliente (nombre, mail) {
+function Client (nombre, mail) {
   this.nombre = nombre;
   this.email = mail;
 }
@@ -36,7 +36,7 @@ let webExpres = prompt("Necesita su sitio dentro de los prox 10 dias?"); */
 /*let servicio = new Service(sections, tienda, mantenimiento, webExpres);*/
 
 
-function precioTotal(param){ 
+function totalPrice(param){ 
 
  
 if (param.tienda == "si") {
@@ -67,22 +67,22 @@ alert(presupuesto);
 console.log(presupuesto);*/
 
 function submitForm() {
-  let formNombre = document.getElementById("inputNombre").value ;
+  let formNombre = $("#inputNombre").val() ;
   console.log(formNombre);
-  let formEmail = document.getElementById("inputEmail").value ;
+  let formEmail = $("#inputEmail").val() ;
   console.log(formEmail);
-  let formSecciones = document.getElementById("selectSecciones").value ;
+  let formSecciones = $("#selectSecciones").val() ;
   console.log(formSecciones);
-  let formTiendaOnline = document.getElementById("selectTiendaOnline").value ;
+  let formTiendaOnline = $("#selectTiendaOnline").val() ;
   console.log(formTiendaOnline);
-  let formMantenimiento = document.getElementById("selectMantenimiento").value ;
+  let formMantenimiento = $("#selectMantenimiento").val() ;
   console.log(formMantenimiento);
-  let formWebExpress = document.getElementById("selectWebExpress").value;
+  let formWebExpress = $("#selectWebExpress").val() ;
   console.log(formWebExpress);
   
   let servicio1 = new Service(formSecciones, formTiendaOnline, formMantenimiento, formWebExpress);
 
-  let cliente1 = new Cliente(formNombre, formEmail);
+  let cliente1 = new Client(formNombre, formEmail);
   mostrarPresupuesto(servicio1, cliente1);
   guardarCliente(cliente1);
 }
@@ -90,8 +90,8 @@ function submitForm() {
 
 
 function mostrarPresupuesto(servicio, cliente) {
-  let resultado = precioTotal(servicio);
-  let formPresupuesto = document.getElementById("formPresupuesto"); 
+  let resultado = totalPrice(servicio);
+  let formPresupuesto = $("#formPresupuesto"); 
   let totalPresupuesto = document.createElement("h3");
   let textPresupuesto = document.createTextNode ("Hola "+ cliente.nombre + ", su presupuesto es " + resultado + "U$D");
   totalPresupuesto.appendChild(textPresupuesto);
