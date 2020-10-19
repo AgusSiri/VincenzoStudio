@@ -89,16 +89,29 @@ function submitForm() {
 
 
 
-function mostrarPresupuesto(servicio, cliente) {
+/*function mostrarPresupuesto(servicio, cliente) {
   let resultado = totalPrice(servicio);
-  let formPresupuesto = $("#formPresupuesto"); 
+  let formPresupuesto = document.getElementById("formPresupuesto"); 
   let totalPresupuesto = document.createElement("h3");
   let textPresupuesto = document.createTextNode ("Hola "+ cliente.nombre + ", su presupuesto es " + resultado + "U$D");
   totalPresupuesto.appendChild(textPresupuesto);
   formPresupuesto.appendChild(totalPresupuesto);
   let presupuesto = ("Su presupuesto es" + " " + resultado + " " + "U$D");
   console.log(presupuesto);
-}
+}*/
+$("#saveChanges").click(function mostrarPresupuesto(servicio,cliente) {
+    let resultado = totalPrice (servicio);
+    let formPresupuesto = $("formPresupuesto");
+    let totalPresupuesto = document.createElement("h3");
+    let textPresupuesto = document.createTextNode ("Hola "+ cliente.nombre + ", su presupuesto es " + resultado + "U$D");
+    totalPresupuesto.appendChild(textPresupuesto);
+    formPresupuesto.appendChild(totalPresupuesto);
+    let presupuesto = ("Su presupuesto es" + " " + resultado + " " + "U$D");
+    console.log(presupuesto);
+  });
+
+
+
 
 function guardarCliente(cliente2) {
   let jsonCliente = { nombre: cliente2.nombre, mail: cliente2.email }
