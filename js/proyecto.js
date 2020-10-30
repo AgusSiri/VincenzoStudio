@@ -62,28 +62,44 @@ function Service(sections, tienda, mantenimiento, webExpress) {
 }
 
 
+let borrarPago = false;
 
-
-$("#formasPago").click (mostrarPagos);
+$("#formasPago").click(mostrarPagos);
+$("#formPresupuesto > #divpagos").hide();
 
 function mostrarPagos() {
-
   $.ajax({
     url: "json/ejemplo.json",
-    type: "GET",
+    tye: "GET",
     dataType: "json"
 
   }).done( function(resultadoJson) {
-    var pagoselemento = document.createElement("h4");
-    var pagostexto = document.createTextNode(resultadoJson.detalles[0].id);
-    pagoselemento.appendChild(pagostexto);
-    $("#formPresupuesto").append(pagoselemento);
-
-  })/*.fail( function(xhr, status, error) {
+    if (borrarPago) {
+      $("#formPresupuesto > #divpagos").fadeOut(1000);      
+    } else {   
+        $("#formPresupuesto > #divpagos > h5").remove();
+        $("#formPresupuesto > #divpagos > h4").remove();
+        for (let i = 0; i <= 3; i++){
+          let id = resultadoJson.detalles[i].id;
+          let pago = resultadoJson.detalles[i].pago;
+          console.log(id)
+          let idelemento = document.createElement("h4");
+          let idtexto = document.createTextNode(id);
+          idelemento.appendChild(idtexto);
+          $("#formPresupuesto > #divpagos").append(idelemento);
+          let pagoelemento = document.createElement("h5");
+          let pagotexto = document.createTextNode(pago);
+          pagoelemento.appendChild(pagotexto);
+          $("#formPresupuesto > #divpagos").append(pagoelemento);
+    } 
+    $("#formPresupuesto > #divpagos").fadeIn(800);
+  }
+  borrarPago = !borrarPago;
+   }).fail( function(xhr, status, error) {
     console.log(xhr);
     console.log(status);
     console.log(error);
-  })*/
+  })
 }
 
 function totalPrice(param){ 
@@ -97,7 +113,7 @@ if (param.mantenimiento == "si") {
 } else {
   valorMantenimiento=0;
 }
-if (param.webExpres == "si") {
+if (param.webExpress == "si") {
   valorWebExpress=150;
 } else {
   valorWebExpress=0;
@@ -184,20 +200,23 @@ $("formPresupuesto").submit(function validarForm() {
 })*/
 
 
+$("#formPresupuesto > #divmostrarPresup").hide();
 
 function mostrarPresupuesto(servicio,cliente) {
     console.log(servicio)
     console.log(cliente)
-    let resultado = totalPrice (servicio);
-    //let formPresupuesto = $("#formPresupuesto");
-    let totalPresupuesto = document.createElement("h3");
-    let textPresupuesto = document.createTextNode ("Hola "+ cliente.nombre + ", su presupuesto es " + resultado + "U$D");
-    totalPresupuesto.appendChild(textPresupuesto);
-    $("#formPresupuesto").append(totalPresupuesto);
+    let resultado = totalPrice(servicio);
+    /*let totalPresupuesto = document.createElement("h3");
+    let textPresupuesto = document.createTextNode ();
+    totalPresupuesto.appendChild(textPresupuesto);*/
+
+    $("#formPresupuesto > #divmostrarPresup > h3").remove();
+    let totalPresupuesto = $("<h3></h3>").text("Hola " + cliente.nombre + ", su presupuesto es " + resultado + "U$D")
+    $("#formPresupuesto > #divmostrarPresup").append(totalPresupuesto);
     let presupuesto = ("Su presupuesto es" + " " + resultado + " " + "U$D");
     console.log(presupuesto);
+    $("#formPresupuesto > #divmostrarPresup").fadeIn(800);
 }
-
 
 
 function guardarCliente(cliente2) {
@@ -214,13 +233,19 @@ cargarCliente();
 
 function cargarCliente() {
   let stringifyClient = localStorage.getItem('cliente')
-  console.log(stringifyClient);
+  if (stringifyClient) {
   let cliente = JSON.parse(stringifyClient);
   console.log(cliente['nombre']);
   document.getElementById("inputNombre").value = cliente['nombre'];
   document.getElementById("inputDni").value = cliente['dni'];
   document.getElementById("inputEmail").value = cliente ['mail'];
+} else {
+  console.log('no existe elemento en local storage')
 }
+
+}
+let pago = ["Transferencia", "Mastercard", "Visa", "American Express", "Maestro"];
+let priomerelem = pago[0]
 
 /*obtenerCliente();
 
@@ -228,32 +253,6 @@ function obtenerCliente() {
   if (localStorage.getItem('cliente')) {
     console.log(localStorage.getItem('cliente'))
   } else {
-    console.log ('No existe elemento en local storage')
-  }
-}
-
-
-
-//Medios de pago//
-/*let pago = ["Transferencia", "Mastercard", "Visa", "American Express", "Maestro"];
-for (let i = 0; i <= 5; i++){
-  switch (i) {
-    case 0:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene un 10% de descuento sobre el valor total");
-      break;
-    case 1:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene hasta 3 cuotas sin interes");
-      break;
-    case 2:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene hasta 6 cuotas sin interes");
-      break;
-    case 3:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene hasta 12 cuotas con interes");
-      break;
-    case 4:
-      alert("Con "+ pago[i].toUpperCase() + "Usted puede abonar en 1 pago");
-      break;
+    console.log('No existe elemento en local storage')
   }
 }*/
-
-
