@@ -54,6 +54,7 @@ function Client (nombre, mail, dni) {
   this.dni = parseInt(dni);
 }
 //Servicio a contratar//
+
 function Service(sections, tienda, mantenimiento, webExpress) {
     this.sections = parseInt(sections);
     this.tienda = tienda;
@@ -62,28 +63,44 @@ function Service(sections, tienda, mantenimiento, webExpress) {
 }
 
 
+let borrarPago = false;
 
-
-$("#formasPago").click (mostrarPagos);
+$("#formasPago").click(mostrarPagos);
+$("#formPresupuesto > #divpagos").hide();
 
 function mostrarPagos() {
-
   $.ajax({
     url: "json/ejemplo.json",
-    type: "GET",
+    tye: "GET",
     dataType: "json"
 
   }).done( function(resultadoJson) {
-    var pagoselemento = document.createElement("h4");
-    var pagostexto = document.createTextNode(resultadoJson.detalles[0].id);
-    pagoselemento.appendChild(pagostexto);
-    $("#formPresupuesto").append(pagoselemento);
-
-  })/*.fail( function(xhr, status, error) {
+    if (borrarPago) {
+      $("#formPresupuesto > #divpagos").fadeOut(1000);      
+    } else {   
+        $("#formPresupuesto > #divpagos > h5").remove();
+        $("#formPresupuesto > #divpagos > h4").remove();
+        for (let i = 0; i <= 3; i++){
+          let id = resultadoJson.detalles[i].id;
+          let pago = resultadoJson.detalles[i].pago;
+          console.log(id)
+          let idelemento = document.createElement("h4");
+          let idtexto = document.createTextNode(id);
+          idelemento.appendChild(idtexto);
+          $("#formPresupuesto > #divpagos").append(idelemento);
+          let pagoelemento = document.createElement("h5");
+          let pagotexto = document.createTextNode(pago);
+          pagoelemento.appendChild(pagotexto);
+          $("#formPresupuesto > #divpagos").append(pagoelemento);
+    } 
+    $("#formPresupuesto > #divpagos").fadeIn(800);
+  }
+  borrarPago = !borrarPago;
+   }).fail( function(xhr, status, error) {
     console.log(xhr);
     console.log(status);
     console.log(error);
-  })*/
+  })
 }
 
 function totalPrice(param){ 
@@ -97,7 +114,7 @@ if (param.mantenimiento == "si") {
 } else {
   valorMantenimiento=0;
 }
-if (param.webExpres == "si") {
+if (param.webExpress == "si") {
   valorWebExpress=150;
 } else {
   valorWebExpress=0;
@@ -109,13 +126,32 @@ return resultado;
 
 
 
-$("#saveChanges").click( function submitForm() {
-  let formNombre = $("#inputNombre").val() ;
-  console.log(formNombre);
-  let formDni = $("#inputDni").val();
-  console.log(formDni);
-  let formEmail = $("#inputEmail").val() ;
-  console.log(formEmail);
+function validarNombre(valor) {
+  if( valor == null || valor.length == 0 || /^\s+$/.test(valor) ) {
+    console.log(valor);
+    return false;
+  } 
+  return true;
+}
+
+function validarDNI(valor) {
+  if( valor == null || valor.length == 0 || !(/^\d{7,8}$/.test(valor))) {
+    console.log(valor);
+    return false;
+  } 
+  return true;
+}
+
+function validarMail(valor) {
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if( valor == null || valor.length == 0 || !re.test(valor)) {
+    console.log(valor);
+    return false;
+  } 
+  return true;
+}
+
+function getService(){
   let formSecciones = $("#selectSecciones").val() ;
   console.log(formSecciones);
   let formTiendaOnline = $("#selectTiendaOnline").val() ;
@@ -125,77 +161,113 @@ $("#saveChanges").click( function submitForm() {
   let formWebExpress = $("#selectWebExpress").val() ;
   console.log(formWebExpress);
   let servicio1 = new Service(formSecciones, formTiendaOnline, formMantenimiento, formWebExpress);
+  return servicio1;
+};
+
+function getClient(){
+  let formNombre = $("#inputNombre").val() ;
+  console.log(formNombre);
+  let formDni = $("#inputDni").val();
+  console.log(formDni);
+  let formEmail = $("#inputEmail").val() ;
+  console.log(formEmail);
   let cliente1 = new Client(formNombre, formEmail, formDni);
-  mostrarPresupuesto(servicio1, cliente1);
-  guardarCliente(cliente1);
-})
+  return cliente1;
 
-
-/*$(function(){
-  $("#saveChanges").on("click", function() {
-    $("#formPresupuestoModal").validate
-    ({
-      rules:
-      {
-        email: {required: true, email: true, minlength: 8, maxlenght: 80}
-      },
-      messages:
-      {
-        email: {required: 'Ingrese un email', email: 'El formato no es válido', minlength: 'ingrese un email valido', maxlenght: 'ingrese un email valido'}
-      }
-    });
-  });
-} );*/
-
-
-
-
-/*
-validarForm();
-
-$("formPresupuesto").submit(function validarForm() {
-  valor = $("#inputNombre").val();
-
-  if( valor == null || valor.length == 0 || /^\s+$/.test(valor) ) {
-    alert('[ERROR] El campo debe tener un valor de...');
-    return false;
-  } 
-
-  valor = $("inputDni").val();
-
-  else if ( !(/^\d{9}$/.test(valor)) )  {
-    // Si no se cumple la condicion...
-    alert('[ERROR] El campo debe tener un valor de...');
-    return false;
-  }
-
-  ...
-  else if (condicion que debe cumplir el último campo del formulario) {
-    // Si no se cumple la condicion...
-    alert('[ERROR] El campo debe tener un valor de...');
-    return false;
-  }
-
-  // Si el script ha llegado a este punto, todas las condiciones
-  // se han cumplido, por lo que se devuelve el valor true
-  return true;
 }
 
-})*/
+function submitForm(){
+  let servicio1 = getService();
+  let cliente1 = getClient();
+  mostrarPresupuesto(servicio1, cliente1);
+  guardarCliente(cliente1);
+}
 
+$("#saveChanges").click( function() {
+  let nombreCheck = validarNombre($("#inputNombre").val());
+  let DNICheck = validarDNI($("#inputDni").val());
+  let mailCheck  = validarMail($("#inputEmail").val()); 
 
+  $("#formPresupuesto > #divmostrarPresup > h3").remove();
+  $("#formPresupuesto > #validar-nombre > h6").remove();
+  $("#formPresupuesto > #validar-dni > h6").remove();
+  $("#formPresupuesto > #validar-email > h6").remove();
+
+  if(nombreCheck && DNICheck && mailCheck){
+    submitForm();
+  }else{
+    if(nombreCheck == false){
+      let nombreFalse = $("<h6></h6>").text("Ingrese nombre válido!")
+      $("#formPresupuesto > #validar-nombre").append(nombreFalse);
+      //div con error en nombre
+    }
+    if(DNICheck == false){
+      //div con error en dni
+      let dniFalse = $("<h6></h6>").text("Ingrese DNI válido!")
+      $("#formPresupuesto > #validar-dni").append(dniFalse);
+    }
+    if(mailCheck == false){
+      //div con error en mail
+      let emailFalse = $("<h6></h6>").text("Ingrese email válido!")
+      $("#formPresupuesto > #validar-email").append(emailFalse);
+    }
+  }
+})
+
+$("#limpiarDatos").click(function(){
+  limpiarDatos();
+})
+
+function limpiarDatos() {
+  $("#formPresupuesto > #divmostrarPresup > h3").remove();
+  $("#formPresupuesto > #divmostrarPresup > #selectCuotasPresupuesto").hide(300);
+  $("#formPresupuesto > #divmostrarPresup > #labelCuotas").hide(300);
+};
+
+$("#formPresupuesto > #divmostrarPresup").hide();
 
 function mostrarPresupuesto(servicio,cliente) {
     console.log(servicio)
     console.log(cliente)
-    let resultado = totalPrice (servicio);
-    //let formPresupuesto = $("#formPresupuesto");
-    let totalPresupuesto = document.createElement("h3");
-    let textPresupuesto = document.createTextNode ("Hola "+ cliente.nombre + ", su presupuesto es " + resultado + "U$D");
-    totalPresupuesto.appendChild(textPresupuesto);
-    $("#formPresupuesto").append(totalPresupuesto);
-    let presupuesto = ("Su presupuesto es" + " " + resultado + " " + "U$D");
-    console.log(presupuesto);
+    let resultado = totalPrice(servicio);
+    /*let totalPresupuesto = document.createElement("h3");
+    let textPresupuesto = document.createTextNode ();
+    totalPresupuesto.appendChild(textPresupuesto);*/
+
+    $("#formPresupuesto > #divmostrarPresup > h3").remove();
+    let totalPresupuesto = $("<h3></h3>").text("Hola " + cliente.nombre + ", su presupuesto es " + resultado + "U$D");
+    $("#formPresupuesto > #divmostrarPresup").append(totalPresupuesto);
+    $("#formPresupuesto > #divmostrarPresup").fadeIn(800);
+    $("#formPresupuesto > #divmostrarPresup > #labelCuotas").fadeIn(600);
+    $("#formPresupuesto > #divmostrarPresup > #selectCuotasPresupuesto").fadeIn(600);
+
+    return resultado;
+};
+
+
+$("#selectCuotasPresupuesto").change(function(){
+  calcularCuotas();
+})
+
+function calcularCuotas() {
+  let servicio1 = getService();
+  let precioTotal = totalPrice(servicio1);
+  let opcionesCuotas = parseInt($("#selectCuotasPresupuesto").val()) ;
+  let calculoDeCuotas = precioTotal/opcionesCuotas;
+  calculoDeCuotas = calculoDeCuotas.toFixed(2);
+  console.log(calculoDeCuotas);
+  mostrarCuotas(calculoDeCuotas, opcionesCuotas);
+  return calculoDeCuotas;
+};
+
+
+
+function mostrarCuotas(calculo, opciones) {
+  let cliente1 = getClient();
+  $("#formPresupuesto > #divmostrarPresup > h3").text("Hola "+ cliente1.nombre + ", su presupuesto es " + calculo + "U$D x" + opciones);
+  /*$("#formPresupuesto > #divmostrarPresup > h4").remove();
+  let textoCuotas = $("<h4></h4>").text("Hola "+ cliente1.nombre + ", su presupuesto es " + calculo + "U$D x" + opciones);
+  $("#formPresupuesto > #divmostrarPresup").append(textoCuotas);*/
 }
 
 
@@ -214,46 +286,17 @@ cargarCliente();
 
 function cargarCliente() {
   let stringifyClient = localStorage.getItem('cliente')
-  console.log(stringifyClient);
+  if (stringifyClient) {
   let cliente = JSON.parse(stringifyClient);
   console.log(cliente['nombre']);
-  document.getElementById("inputNombre").value = cliente['nombre'];
-  document.getElementById("inputDni").value = cliente['dni'];
-  document.getElementById("inputEmail").value = cliente ['mail'];
+  $("#inputNombre").val(cliente['nombre']);
+  $("#inputDni").val(cliente['dni']);
+  $("#inputEmail").val(cliente ['mail']);
+} else {
+  console.log('no existe elemento en local storage')
 }
 
-/*obtenerCliente();
-
-function obtenerCliente() {
-  if (localStorage.getItem('cliente')) {
-    console.log(localStorage.getItem('cliente'))
-  } else {
-    console.log ('No existe elemento en local storage')
-  }
 }
-
-
-
-//Medios de pago//
-/*let pago = ["Transferencia", "Mastercard", "Visa", "American Express", "Maestro"];
-for (let i = 0; i <= 5; i++){
-  switch (i) {
-    case 0:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene un 10% de descuento sobre el valor total");
-      break;
-    case 1:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene hasta 3 cuotas sin interes");
-      break;
-    case 2:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene hasta 6 cuotas sin interes");
-      break;
-    case 3:
-      alert("Con "+ pago[i].toUpperCase() + "Usted tiene hasta 12 cuotas con interes");
-      break;
-    case 4:
-      alert("Con "+ pago[i].toUpperCase() + "Usted puede abonar en 1 pago");
-      break;
-  }
-}*/
-
+let pago = ["Transferencia", "Mastercard", "Visa", "American Express", "Maestro"];
+let priomerelem = pago[0]
 
